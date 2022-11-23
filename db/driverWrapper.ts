@@ -37,7 +37,7 @@ const createMssqlDriverWrapper = (
       })
       await request.query(query);
     },
-    async select(table, where, fields) {
+    async select(table, fields, where) {
       let query = `
         SELECT * FROM $table
       `;
@@ -45,10 +45,12 @@ const createMssqlDriverWrapper = (
       if(where) {
         query += `WHERE ${where.join('AND, ')}`;
       }
-      if(fields) {
-        const uniqueFields = Object.keys(fields);
+      if(Array.isArray(fields)) {
+        const uniqueFields = [...new Set(fields)];
         query = query.replace('*', uniqueFields.join(','));
       }
+
+      console.log(query)
 
       const response = await connection.query(query);
       return response.recordset;

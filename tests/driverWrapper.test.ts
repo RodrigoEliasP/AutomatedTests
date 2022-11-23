@@ -102,26 +102,60 @@ describe('Update method', () => {
 })
 
 describe('Select method', () => {
+  beforeAll(async () => {
+    const connection = await mssql.connect(dbConfig);
+    const driverWrapper = createMssqlDriverWrapper(connection);
+
+    await driverWrapper.insert(
+      'products', 
+      ['name', 'quantity', 'value', 'updated_at'], 
+      ['Paçoca', 30, 0.50, new Date().toISOString()],
+    )
+    await driverWrapper.insert(
+      'products', 
+      ['name', 'quantity', 'value', 'updated_at'], 
+      ['Cachorro quente', 0, 7, new Date().toISOString()],
+    )
+    await driverWrapper.insert(
+      'products', 
+      ['name', 'quantity', 'value', 'updated_at'], 
+      ['Pirulito', 100, 0.70, new Date().toISOString()],
+    )
+    await driverWrapper.insert(
+      'products', 
+      ['name', 'quantity', 'value', 'updated_at'], 
+      ['Notebook', 150, 3799, new Date().toISOString()],
+    )
+  })
   test('select all fields working', async () => {
     const connection = await mssql.connect(dbConfig);
     const driverWrapper = createMssqlDriverWrapper(connection);
-  
+
     const selection = await driverWrapper.select<product>(
       'products',
-      undefined,
-      
+      'all',
     );
-    const['id']
-    selection[0].
-    const { recordset } = await mssql.query<product>('SELECT * FROM products;');
-    const insertedProduct = recordset[0];
-    expect(insertedProduct.id).not.toBeUndefined();
-    expect(insertedProduct.name).toBe('Ovos');
-    expect(insertedProduct.value).toBe(7.50);
-    expect(insertedProduct.quantity).toBe(1000);
-    expect(insertedProduct.created_at).toBeTruthy();
-    expect(insertedProduct.updated_at).toBeTruthy();
-    expect(insertedProduct.id).not.toBeNull();
+    
+    expect(selection.length).toEqual(6)
+  })
+  test('select specifics fields working', async () => {
+    const connection = await mssql.connect(dbConfig);
+    const driverWrapper = createMssqlDriverWrapper(connection);
+
+    const selection = await driverWrapper.select<Pick<product, 'name' | 'quantity'>>(
+      'products',
+      ['name', 'quantity'],
+    );
+    
+    console.log(selection);
+
+    const returnedOnlyCorrectFields = selection.every(select => {
+      return Object.keys(select).every(key => {
+        return ['name', 'quantity'].includes(key);
+      })
+    })
+
+    expect(returnedOnlyCorrectFields).toEqual(true);
   })
 })
 
