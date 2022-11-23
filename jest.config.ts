@@ -1,9 +1,10 @@
+import { Config } from 'jest'
 /*
  * For a detailed explanation regarding each configuration property and type check, visit:
  * https://jestjs.io/docs/configuration
  */
 
-export default {
+const config : Config =  {
   // All imported modules in your tests should be mocked automatically
   // automock: false,
 
@@ -91,7 +92,9 @@ export default {
   // moduleNameMapper: {},
 
   // An array of regexp pattern strings, matched against all module paths before considered 'visible' to the module loader
-  // modulePathIgnorePatterns: [],
+  testPathIgnorePatterns: [
+    '/node_modules/'
+  ],
 
   // Activates notifications for test results
   // notify: false,
@@ -100,7 +103,7 @@ export default {
   // notifyMode: "failure-change",
 
   // A preset that is used as a base for Jest's configuration
-  // preset: undefined,
+  preset: "ts-jest",
 
   // Run tests from one or more projects
   // projects: undefined,
@@ -193,3 +196,5 @@ export default {
   // Whether to use watchman for file crawling
   // watchman: true,
 };
+
+export default config;

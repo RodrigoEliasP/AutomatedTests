@@ -5,8 +5,8 @@ export interface product {
   name: string;
   quantity: number;
   value: number;
-  created_at: string;
-  updated_at: string;
+  created_at: Date;
+  updated_at: Date;
 }
 
 export type entityProduct = model<product>;

@@ -1,12 +1,9 @@
 import sql from 'mssql';
 import { DriverWrapper } from '../types/driverWrapper';
 
-const createMssqlDriverWrapper = async (
-  mssql: typeof sql, 
-  config: sql.config
-): Promise<DriverWrapper> => {
-  const connection = await mssql.connect(config);
-
+const createMssqlDriverWrapper = (
+  connection: sql.ConnectionPool,
+): DriverWrapper => {
   return {
     async delete(table, where) {
       let query = `DELETE FROM $table WHERE $clause`;
@@ -38,14 +35,22 @@ const createMssqlDriverWrapper = async (
       fields.forEach((field, i) => {
         request.input(field, values[i]);
       })
-      await connection.query(query);
+      await request.query(query);
     },
-    async select<T = any>(table: string) {
+    async select(table, where, fields) {
       let query = `
         SELECT * FROM $table
       `;
       query = query.replace('$table', table);
-      const response = await connection.query<T>(query);
+      if(where) {
+        query += `WHERE ${where.join('AND, ')}`;
+      }
+      if(fields) {
+        const uniqueFields = Object.keys(fields);
+        query = query.replace('*', uniqueFields.join(','));
+      }
+
+      const response = await connection.query(query);
       return response.recordset;
     },
     async update(table, where, fields, values) {
