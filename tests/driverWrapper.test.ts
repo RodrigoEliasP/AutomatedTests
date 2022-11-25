@@ -1,27 +1,20 @@
 import mssql from 'mssql';
 import { createMssqlDriverWrapper } from "../db/driverWrapper";
-import { product } from '../types/product';
+import { product } from '../model/entities/product';
 import { sleep } from '../utils/sleep';
+import { testDBConfig } from './testDBConfig';
 
-const dbConfig: mssql.config = {
-  server: 'localhost',
-  port: 1433,
-  user: 'sa',
-  password: 'root',
-  database: 'master',
-  options: {
-    trustServerCertificate: true,
-  }
-}
-afterAll(async () => {
+
+beforeAll(async () => {
   await sleep(1000);
-  (await mssql.connect(dbConfig)).query(
+  (await mssql.connect(testDBConfig)).query(
     'TRUNCATE TABLE products'
   )
 });
+
 describe('Insert method', () => {
   test('insert with db default autofill', async () => {
-    const connection = await mssql.connect(dbConfig);
+    const connection = await mssql.connect(testDBConfig);
     const driverWrapper = createMssqlDriverWrapper(connection);
     const testProduct = {
       name: 'Picanha',
@@ -46,7 +39,7 @@ describe('Insert method', () => {
   })
 
   test('insert with all fields filled', async () => {
-    const connection = await mssql.connect(dbConfig);
+    const connection = await mssql.connect(testDBConfig);
     const driverWrapper = createMssqlDriverWrapper(connection);
     const testProduct = {
       name: 'Picanha',
@@ -74,7 +67,7 @@ describe('Insert method', () => {
 })
 describe('Update method', () => {
   test('update working', async () => {
-    const connection = await mssql.connect(dbConfig);
+    const connection = await mssql.connect(testDBConfig);
     const driverWrapper = createMssqlDriverWrapper(connection);
     const testProduct = {
       name: 'Ovos',
@@ -103,7 +96,7 @@ describe('Update method', () => {
 
 describe('Select method', () => {
   beforeAll(async () => {
-    const connection = await mssql.connect(dbConfig);
+    const connection = await mssql.connect(testDBConfig);
     const driverWrapper = createMssqlDriverWrapper(connection);
 
     await driverWrapper.insert(
@@ -128,7 +121,7 @@ describe('Select method', () => {
     )
   })
   test('select all fields working', async () => {
-    const connection = await mssql.connect(dbConfig);
+    const connection = await mssql.connect(testDBConfig);
     const driverWrapper = createMssqlDriverWrapper(connection);
 
     const selection = await driverWrapper.select<product>(
@@ -139,7 +132,7 @@ describe('Select method', () => {
     expect(selection.length).toEqual(6)
   })
   test('select specifics fields working', async () => {
-    const connection = await mssql.connect(dbConfig);
+    const connection = await mssql.connect(testDBConfig);
     const driverWrapper = createMssqlDriverWrapper(connection);
 
     const selection = await driverWrapper.select<Pick<product, 'name' | 'quantity'>>(
