@@ -1,10 +1,10 @@
-import { dbEntity, Representation } from "./dbEntity";
+import { dbEntity, Representation, RepresentationInTS } from "./dbEntity";
 
-type Rep<K extends dbEntity<Representation>> = K['representation'];
-type PK<K extends dbEntity<Representation>> = K['primaryKey'];
-type PKType<K extends dbEntity<Representation>> = Rep<K>[PK<K>];
+type Rep<K extends dbEntity> = RepresentationInTS<K['representation']>;
+type PK<K extends dbEntity> = K['primaryKey'];
+type PKType<K extends dbEntity> = Rep<K>[PK<K>];
 
-export interface DB<T extends dbEntity<Representation>> {
+export interface DB<T extends dbEntity> {
   insert: (value: Omit<Rep<T>, PK<T>>) => Promise<void>;
   update: (id: PKType<T>, value: Partial<Rep<T>>) => Promise<void>;
   delete: (id: PKType<T>) => Promise<void>;

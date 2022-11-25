@@ -10,15 +10,17 @@ export type FieldTypeToType<K extends FieldTypes> = K extends FieldTypes.number 
   number :
   K extends FieldTypes.string ?
   string :
-  Date
+  Date;
 
+type RepresentationObject<T> = T extends Representation ? T : never
 
 export interface dbEntity<
-  Model extends Representation = Representation
+  Model = any,
+  PK extends keyof Model = any
 > {
-  readonly primaryKey: keyof Model;
+  readonly primaryKey: PK;
   readonly source: string;
-  readonly representation: Model;
+  readonly representation: RepresentationObject<Model>;
 }
 
 export type RepresentationInTS<K extends Representation> = 

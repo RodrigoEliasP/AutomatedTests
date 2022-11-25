@@ -4,8 +4,8 @@ import { DB } from '../types/database';
 import { dbEntity, Representation, RepresentationInTS } from '../types/dbEntity';
 import { DriverWrapper } from '../types/driverWrapper';
 
-export type CreateDatabaseFN<Type extends dbEntity<Representation>  = dbEntity<Representation>> =
-(driver: DriverWrapper, target: Type) => DB<Type>;
+export type CreateDatabaseFN =
+<Type extends dbEntity = dbEntity>(driver: DriverWrapper, target: Type) => DB<Type>;
 
 const createDatabase: CreateDatabaseFN = (driver, target) => {
   type entity = typeof target['representation'];

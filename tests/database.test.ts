@@ -24,6 +24,6 @@ describe('Database tests', () => {
     const dbProduct = await getDbProduct();
     dbProduct.insert({
       
-    });
+    })
   })
 })
