@@ -2,7 +2,7 @@ import { CreateDatabaseFN } from "../../db";
 import { dbEntity, FieldTypes, RepresentationInTS, Representation } from "../../types/dbEntity";
 
 
-const representation = {
+const representation: Representation = {
   id: FieldTypes.number,
   name: FieldTypes.string,
   quantity: FieldTypes.number,
