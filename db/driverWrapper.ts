@@ -50,8 +50,6 @@ const createMssqlDriverWrapper = (
         query = query.replace('*', uniqueFields.join(','));
       }
 
-      console.log(query)
-
       const response = await connection.query(query);
       return response.recordset;
     },
