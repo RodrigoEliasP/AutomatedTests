@@ -1,5 +1,4 @@
 import mssql from 'mssql';
-import { productModel } from '../model/entities/product';
 import { DB } from '../types/database';
 import { dbEntity, Representation, RepresentationInTS } from '../types/dbEntity';
 import { DriverWrapper } from '../types/driverWrapper';

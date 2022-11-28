@@ -1,6 +1,6 @@
 import mssql from 'mssql';
 import { createMssqlDriverWrapper } from "../db/driverWrapper";
-import { product } from '../model/entities/product';
+import { product } from '../../model/entities/product';
 import { sleep } from '../utils/sleep';
 import { testDBConfig } from './testDBConfig';
 
