@@ -16,11 +16,12 @@ type RepresentationObject<T> = T extends Representation ? T : never
 
 export interface dbEntity<
   Model = any,
-  PK extends keyof Model = any
 > {
-  readonly primaryKey: PK;
+  readonly primaryKey: keyof Model;
+  readonly autoIncrement: boolean;
   readonly source: string;
   readonly representation: RepresentationObject<Model>;
+  readonly optionalFields: readonly (keyof Model)[];
 }
 
 export type RepresentationInTS<K extends Representation> = 

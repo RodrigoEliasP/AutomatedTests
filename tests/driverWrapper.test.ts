@@ -139,8 +139,6 @@ describe('Select method', () => {
       'products',
       ['name', 'quantity'],
     );
-    
-    console.log(selection);
 
     const returnedOnlyCorrectFields = selection.every(select => {
       return Object.keys(select).every(key => {

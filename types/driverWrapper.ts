@@ -1,5 +1,3 @@
-import { InArray, UniqueArray } from "../utils/helpers";
-
 export interface DriverWrapper {
   insert: (
     table: string, 
@@ -18,9 +16,9 @@ export interface DriverWrapper {
   ) => Promise<void>;
   select: <T>(
     table: string,  
-    fields: 'all' | Array<keyof T>,
+    fields: 'all' | readonly (keyof T)[],
     where?: string[]
   ) => Promise<
     Array<T>
-  >;
+  >
 };
