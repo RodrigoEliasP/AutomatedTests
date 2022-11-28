@@ -14,7 +14,7 @@ type InsertValues<T extends dbEntity> = T['autoIncrement'] extends true
 
 export interface DB<T extends dbEntity> {
   insert: (value: InsertValues<T>) => Promise<void>;
-  update: (id: PKType<T>, value: Partial<Rep<T>>) => Promise<void>;
+  update: (id: PKType<T>, value: Omit<Partial<Rep<T>>, PK<T>>) => Promise<void>;
   delete: (id: PKType<T>) => Promise<void>;
   list: () => Promise<Rep<T>[]>;
   get: (id: PKType<T>) => Promise<Rep<T>>;

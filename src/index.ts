@@ -1,8 +1,11 @@
 
-import { app } from './app';
+import { app, setupApp } from './app';
 
 const port = 80;
 
+
+setupApp()
+
 app.listen(port, 'localhost', () => {
-  console.log('all working just fine');
+  console.log('listening on port', port);
 });

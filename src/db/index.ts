@@ -12,7 +12,8 @@ const createDatabase: CreateDatabaseFN = (driver, target) => {
 
   return {
     async delete(id) {
-      await driver.delete(source, [`${primaryKey.toString()} = ${id}`])
+      await this.get(id);
+      await driver.delete(source, [`${primaryKey.toString()} = ${id}`]);
     },
     async get(id) {
       const result = await driver.select<entity>(
@@ -40,6 +41,7 @@ const createDatabase: CreateDatabaseFN = (driver, target) => {
     },
     async update(id, insertion) {
       const valuesToInsert = Object.values(insertion).filter(Boolean) as Array<string | number | Date>;
+      await this.get(id);
       return await driver.update(
         source, 
         [`${primaryKey.toString()} = ${id}`],

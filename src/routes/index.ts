@@ -1,4 +1,6 @@
 import { Router } from "express";
+import { setupControllers } from "../controllers";
+import { DriverWrapper } from "../types/driverWrapper";
 
 const router = Router();
 
@@ -7,17 +9,9 @@ router.get('/', (req, res) => {
   res.send({ message: 'Welcome newcomer, nice to meet you' })
 });
 
-router.get('/products', (req, res) => {
+const setupRoutes = (driverWrapper: DriverWrapper) => {
+  setupControllers(router, driverWrapper);
+  return router;
+}
 
-});
-router.put('/products', (req, res) => {
-  
-});
-router.post('/products', (req, res) => {
-  
-});
-router.delete('/products', (req, res) => {
-  
-});
-
-export { router };
+export { setupRoutes };

@@ -1,16 +1,14 @@
 import { Router } from "express";
+import { createDatabase } from "../db";
+import { productModel } from "../model/entities/product";
+import { DriverWrapper } from "../types/driverWrapper";
+import { createProductsController } from "./products";
 
-const router = Router();
+export const setupControllers = async (router: Router, driverWrapper: DriverWrapper) => {
 
-router.get('/products', (req, res) => {
+  const productDb = createDatabase(driverWrapper, productModel);
 
-});
-router.put('/products', (req, res) => {
-  
-});
-router.post('/products', (req, res) => {
-  
-});
-router.delete('/products', (req, res) => {
-  
-});
+  const productRouter = createProductsController(router, productDb);
+
+  return productRouter
+}

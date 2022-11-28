@@ -10,15 +10,17 @@ const representation = {
   updated_at: FieldTypes.date,
 } as const;
 
-const optionalFields = ['created_at', 'updated_at'] as const
+
 
 export const productModel = {
   primaryKey: 'id',
   autoIncrement: true,
   source: 'products',
   representation,
-  optionalFields,
-} satisfies dbEntity<typeof representation>
+  optionalFields: ['created_at', 'updated_at'],
+} satisfies dbEntity<typeof representation>;
+
+export type ProductEntity = typeof productModel;
 
 
 type obj = { foo: string, bar: true | false }

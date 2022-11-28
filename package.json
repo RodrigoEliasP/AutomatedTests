@@ -18,7 +18,7 @@
   },
   "scripts": {
     "build": "tsc",
-    "dev": "ts-node-dev --respawn --ignore-watch node_modules --no-notify --files index.ts",
+    "dev": "ts-node-dev --respawn --ignore-watch node_modules --no-notify --files src/index.ts",
     "run": "node build/index.js",
     "test": "jest --runInBand"
   },
