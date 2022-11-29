@@ -1,30 +1,10 @@
-import mssql from 'mssql';
-import { createDatabase } from '../db';
-import { createMssqlDriverWrapper } from "../db/driverWrapper";
+
 import { product, productModel } from '../model/entities/product';
-import { sleep } from '../utils/sleep';
-import { testDBConfig } from './testDBConfig';
+import { getDbProduct, truncateProducts } from './helpers';
 
 beforeAll(async () => {
-  await sleep(1000);
-  (await mssql.connect(testDBConfig)).query(
-    'TRUNCATE TABLE products'
-  )
+  await truncateProducts();
 });
-afterAll(async () => {
-  await sleep(1000);
-  (await mssql.connect(testDBConfig)).query(
-    'TRUNCATE TABLE products'
-  )
-});
-
-
-const getDbProduct = async () => {
-  const cp = await mssql.connect(testDBConfig);
-  const driver = createMssqlDriverWrapper(cp);
-  
-  return [driver, createDatabase(driver, productModel)] as const;
-}
 
 describe('Database tests', () => {
   describe('Insert', () => {

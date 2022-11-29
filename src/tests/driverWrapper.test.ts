@@ -1,28 +1,11 @@
 import mssql from 'mssql';
-import { createMssqlDriverWrapper } from "../db/driverWrapper";
 import { product } from '../model/entities/product';
-import { sleep } from '../utils/sleep';
-import { testDBConfig } from './testDBConfig';
-
-const truncateProducts = async () => {
-  const cp = await mssql.connect(testDBConfig)
-  await cp.query(
-    'TRUNCATE TABLE products'
-  );
-}
+import { getDriverWrapper, truncateProducts } from './helpers';
 
 beforeAll(async () => {
   await truncateProducts();
 });
-afterAll(async () => {
-  await truncateProducts();
-});
 
-async function getDriverWrapper() {
-  const connection = await mssql.connect(testDBConfig);
-  const driverWrapper = createMssqlDriverWrapper(connection);
-  return driverWrapper;
-}
 
 describe('Driver Wrapper', () => {
   describe('Insert method', () => {

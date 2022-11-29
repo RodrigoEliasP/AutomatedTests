@@ -13,7 +13,8 @@ export const createProductsController = (router: Router, database: DB<ProductEnt
   });
   router.get('/product/:id', async (req, res, next) => {
     try {
-      const product = await database.get(parseInt(req.params.id, 10)); 
+      const id = parseInt(req.params.id, 10);
+      const product = await database.get(id); 
       res.status(200).send(product);
     } catch (e) {
       next(e)
